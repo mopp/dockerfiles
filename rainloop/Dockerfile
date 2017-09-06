@@ -4,7 +4,6 @@ RUN apt-get update && \
     apt-get --yes upgrade && \
     apt-get --yes install nginx wget
 
-RUN service nginx start
 RUN mkdir -p /var/www/rainloop && \
     cd /var/www/rainloop && \
     curl -sL https://repository.rainloop.net/installer.php | php && \
@@ -12,4 +11,9 @@ RUN mkdir -p /var/www/rainloop && \
     find . -type f -exec chmod 644 {} \; && \
     chown -R www-data:www-data .
 
+COPY rainloop.conf /etc/nginx/sites-enabled/rainloop.conf
+COPY www.conf /usr/local/etc/php-fpm.d/zzz-ww.conf
+
 EXPOSE 80
+
+ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;"]
