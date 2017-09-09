@@ -16,6 +16,9 @@ COPY rainloop.conf /etc/nginx/sites-enabled/rainloop.conf
 
 COPY www.conf /usr/local/etc/php-fpm.d/zzz-ww.conf
 
+COPY init.sh /
+RUN chmod +x /init.sh
+
 EXPOSE 80
 
-ENTRYPOINT ["/usr/local/sbin/php-fpm", "-D && ", "/usr/sbin/nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/init.sh"]
